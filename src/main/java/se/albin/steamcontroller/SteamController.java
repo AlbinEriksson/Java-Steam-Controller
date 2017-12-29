@@ -8,7 +8,7 @@ import javax.usb.UsbHub;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public final class SteamController
 {
 	private final Analog2D analogTouchLeft = new Analog2D();

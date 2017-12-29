@@ -13,6 +13,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({ "WeakerAccess", "unused", "UnusedReturnValue" })
 public final class SteamControllerListener
 {
 	private final List<SteamControllerSubscriber> subscribers = new ArrayList<>();
@@ -228,5 +229,5 @@ public final class SteamControllerListener
 	
 	public void addSubscriber(SteamControllerSubscriber subscriber) { subscribers.add(subscriber); }
 	
-	public void removeInputProcessors() { subscribers.clear(); }
+	public void removeSubscriber() { subscribers.clear(); }
 }
