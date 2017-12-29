@@ -1,4 +1,4 @@
-# Java Steam Controller
+# Java Steam Controller [![](https://jitpack.io/v/AlbinEriksson/Java-Steam-Controller.svg)](https://jitpack.io/#AlbinEriksson/Java-Steam-Controller)
 A Java 1.8 library which can interpret inputs from a Steam Controller.
 ## Only the Steam Controller?
 I know, most controllers rely on XInput or DInput. And I know, there are libraries for this.  
@@ -21,7 +21,7 @@ Then, add the JBinary dependency:
 <dependencies>
 	<dependency>
 		<groupId>com.github.AlbinEriksson</groupId>
-		<artifactId>JavaSteamController</artifactId>
+		<artifactId>Java-Steam-Controller</artifactId>
 		<version>1.0.0</version>
 	</dependency>
 </dependencies>
@@ -38,7 +38,7 @@ allprojects {
 Then, add the JBinary dependency:
 ```gradle
 dependencies {
-	compile 'com.github.AlbinEriksson:JavaSteamController:1.0.0'
+	compile 'com.github.AlbinEriksson:Java-Steam-Controller:1.0.0'
 }
 ```
 ### Development versions
