@@ -200,11 +200,7 @@ public final class SteamControllerListener
 						          .updateRightPadX(rightPadX)
 						          .updateRightPadY(rightPadY);
 						
-						StringBuilder data = new StringBuilder();
-						for(byte aBuffer : buffer)
-							data.append(UsbUtil.toHexString(aBuffer)).append(" ");
-
-						Optional.ofNullable(logListener).ifPresent(l->l.log(data.toString()));
+						Optional.ofNullable(logListener).ifPresent(l->l.log(buffer));
 
 						if(!skipCopy)
 						{
@@ -242,7 +238,7 @@ public final class SteamControllerListener
 
 	@FunctionalInterface
 	public static interface LogListener{
-		void log(String message);
+		void log(byte[] data);
 	}
 
 }
