@@ -16,13 +16,13 @@ Add the jitpack.io repository to your pom.xml file:
 	</repository>
 </repositories>
 ```
-Then, add the JBinary dependency:
+Then, add the Java-Steam-Controller dependency:
 ```xml
 <dependencies>
 	<dependency>
 		<groupId>com.github.AlbinEriksson</groupId>
 		<artifactId>Java-Steam-Controller</artifactId>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 	</dependency>
 </dependencies>
 ```
@@ -35,10 +35,10 @@ allprojects {
 	}
 }
 ```
-Then, add the JBinary dependency:
+Then, add the Java-Steam-Controller dependency:
 ```gradle
 dependencies {
-	compile 'com.github.AlbinEriksson:Java-Steam-Controller:1.0.0'
+	compile 'com.github.AlbinEriksson:Java-Steam-Controller:1.1.0'
 }
 ```
 ### Development versions
