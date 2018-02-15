@@ -12,6 +12,7 @@ import javax.usb.util.UsbUtil;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings({ "WeakerAccess", "unused", "UnusedReturnValue" })
 public final class SteamControllerListener
@@ -19,6 +20,8 @@ public final class SteamControllerListener
 	private final List<SteamControllerSubscriber> subscribers = new ArrayList<>();
 	
 	private final SteamController controller;
+
+	private LogListener logListener;
 	
 	private boolean isRunning;
 	
@@ -32,6 +35,11 @@ public final class SteamControllerListener
 		this.controller = controller;
 		
 		device = controller.getDevice();
+	}
+
+
+	public void setLogListener(LogListener logListener){
+		this.logListener=logListener;
 	}
 	
 	public boolean open()
@@ -192,11 +200,8 @@ public final class SteamControllerListener
 						          .updateRightPadX(rightPadX)
 						          .updateRightPadY(rightPadY);
 						
-						StringBuilder data = new StringBuilder();
-						for(byte aBuffer : buffer)
-							data.append(UsbUtil.toHexString(aBuffer)).append(" ");
-						System.out.println(data);
-						
+						Optional.ofNullable(logListener).ifPresent(l->l.log(buffer));
+
 						if(!skipCopy)
 						{
 							if(last != null)
@@ -230,4 +235,10 @@ public final class SteamControllerListener
 	public void addSubscriber(SteamControllerSubscriber subscriber) { subscribers.add(subscriber); }
 	
 	public void removeSubscriber() { subscribers.clear(); }
+
+	@FunctionalInterface
+	public static interface LogListener{
+		void log(byte[] data);
+	}
+
 }
