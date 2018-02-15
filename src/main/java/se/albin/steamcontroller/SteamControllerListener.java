@@ -12,16 +12,14 @@ import javax.usb.util.UsbUtil;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings({ "WeakerAccess", "unused", "UnusedReturnValue" })
 public final class SteamControllerListener
 {
 	private final List<SteamControllerSubscriber> subscribers = new ArrayList<>();
+	private final List<RawDataListener> rawDataListeners = new ArrayList<>();
 	
 	private final SteamController controller;
-
-	private LogListener logListener;
 	
 	private boolean isRunning;
 	
@@ -35,11 +33,6 @@ public final class SteamControllerListener
 		this.controller = controller;
 		
 		device = controller.getDevice();
-	}
-
-
-	public void setLogListener(LogListener logListener){
-		this.logListener=logListener;
 	}
 	
 	public boolean open()
@@ -200,8 +193,14 @@ public final class SteamControllerListener
 						          .updateRightPadX(rightPadX)
 						          .updateRightPadY(rightPadY);
 						
-						Optional.ofNullable(logListener).ifPresent(l->l.log(buffer));
-
+						for(RawDataListener listener : rawDataListeners)
+						{
+							byte[] bufferCopy = new byte[buffer.length];
+							System.arraycopy(buffer, 0, bufferCopy, 0, buffer.length);
+							
+							listener.receive(bufferCopy);
+						}
+						
 						if(!skipCopy)
 						{
 							if(last != null)
@@ -234,11 +233,9 @@ public final class SteamControllerListener
 	
 	public void addSubscriber(SteamControllerSubscriber subscriber) { subscribers.add(subscriber); }
 	
-	public void removeSubscriber() { subscribers.clear(); }
-
-	@FunctionalInterface
-	public static interface LogListener{
-		void log(byte[] data);
-	}
-
+	public void removeSubscriber(SteamControllerSubscriber subscriber) { subscribers.remove(subscriber); }
+	
+	public void addRawDataListener(RawDataListener listener) { rawDataListeners.add(listener); }
+	
+	public void removeRawDataListener(RawDataListener listener) { rawDataListeners.remove(listener); }
 }
