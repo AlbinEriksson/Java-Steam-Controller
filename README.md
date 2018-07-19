@@ -22,7 +22,7 @@ Then, add the Java-Steam-Controller dependency:
 	<dependency>
 		<groupId>com.github.AlbinEriksson</groupId>
 		<artifactId>Java-Steam-Controller</artifactId>
-		<version>1.1.0</version>
+		<version>1.1.1</version>
 	</dependency>
 </dependencies>
 ```
@@ -38,7 +38,7 @@ allprojects {
 Then, add the Java-Steam-Controller dependency:
 ```gradle
 dependencies {
-	compile 'com.github.AlbinEriksson:Java-Steam-Controller:1.1.0'
+	compile 'com.github.AlbinEriksson:Java-Steam-Controller:1.1.1'
 }
 ```
 ### Development versions
@@ -64,7 +64,7 @@ public class TestSteamControllerSubscriber implements SteamControllerSubscriber
 ```
 And finally, to listen for inputs:
 ```java
-SteamControllerListener listener = new SteamControllerListener();
+SteamControllerListener listener = new SteamControllerListener(controller);
 listener.open();
 TestSteamControllerSubscriber subscriber = new TestSteamControllerSubscriber();
 listener.addSubscriber(subscriber);
