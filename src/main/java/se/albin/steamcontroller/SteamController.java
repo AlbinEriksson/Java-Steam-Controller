@@ -8,7 +8,7 @@ import javax.usb.UsbHub;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({ "unused", "UnusedReturnValue" })
+@SuppressWarnings({ "unused", "UnusedReturnValue", "WeakerAccess" })
 public final class SteamController
 {
 	private final Analog2D analogTouchLeft = new Analog2D();
@@ -72,22 +72,37 @@ public final class SteamController
 		{
 			UsbHub rootHub = UsbHostManager.getUsbServices().getRootUsbHub();
 			
-			//noinspection unchecked
-			for(UsbDevice device : (List<UsbDevice>)rootHub.getAttachedUsbDevices())
-			{
-				UsbDeviceDescriptor descriptor = device.getUsbDeviceDescriptor();
-				short vid = descriptor.idVendor();
-				short pid = descriptor.idProduct();
-				
-				if(vid == 0x28DE && (pid == 0x1102 || pid == 0x1142))
-				{
-					controllers.add(new SteamController(device, pid == 0x1102));
-				}
-			}
+			controllers.addAll(getControllersInHub(rootHub));
 		}
 		catch(UsbException e)
 		{
 			e.printStackTrace();
+		}
+		
+		return controllers;
+	}
+	
+	private static List<SteamController> getControllersInHub(UsbHub hub)
+	{
+		List<SteamController> controllers = new ArrayList<>();
+		
+		//noinspection unchecked
+		for(UsbDevice device : (List<UsbDevice>)hub.getAttachedUsbDevices())
+		{
+			if(device.isUsbHub())
+			{
+				controllers.addAll(getControllersInHub((UsbHub)device));
+				continue;
+			}
+			
+			UsbDeviceDescriptor descriptor = device.getUsbDeviceDescriptor();
+			short vid = descriptor.idVendor();
+			short pid = descriptor.idProduct();
+			
+			if(vid == 0x28DE && (pid == 0x1102 || pid == 0x1142))
+			{
+				controllers.add(new SteamController(device, pid == 0x1102));
+			}
 		}
 		
 		return controllers;
